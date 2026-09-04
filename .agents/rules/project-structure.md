@@ -18,19 +18,20 @@ express-app/
 │   └── ProfileController.js   # show/index (profile)
 │
 ├── middleware/                # Express request interceptors & guards
-│   ├── auth.js                # JWT Bearer token authentication guard
-│   └── blacklist.js           # In-memory token revocation registry
+│   └── auth.js                # JWT & database-backed token authentication guard
 │
 ├── routes/                    # API route declarations
 │   └── api.js                 # Central API route definitions
 │
 ├── models/                    # Data access layer & Knex query models
-│   └── User.js
+│   ├── User.js                # Users query model
+│   └── Token.js               # Database-backed personal access tokens model
 │
 ├── tests/                     # Automated Test Suite (Laravel Style)
 │   ├── Feature/               # End-to-end HTTP API integration tests (Supertest)
 │   │   └── AuthTest.test.js
 │   └── Unit/                  # Model & logic unit tests (Jest)
+│       ├── TokenTest.test.js
 │       └── UserTest.test.js
 │
 ├── .env                       # Environment variables (git-ignored)

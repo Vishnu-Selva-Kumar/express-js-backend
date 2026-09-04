@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { isTokenBlacklisted } = require('./blacklist');
+const Token = require('../models/Token');
 
 /**
  * Authentication Middleware
- * Validates JWT Bearer token, checks blacklist, and verifies user exists
+ * Validates JWT Bearer token against database-stored tokens and verifies user exists
  */
 const auth = async (req, res, next) => {
   try {
@@ -15,12 +15,16 @@ const auth = async (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
 
-    if (isTokenBlacklisted(token)) {
-      return res.status(401).json({ message: 'Unauthorized: Token has been revoked' });
+    // Check database token validity
+    const tokenRecord = await Token.findValidToken(token);
+    if (!tokenRecord) {
+      return res.status(401).json({ message: 'Unauthorized: Invalid or revoked token.' });
     }
 
+    // Verify JWT signature & expiration
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'super_secret_jwt_key_here');
 
+    // Verify user exists and is active
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: 'Unauthorized: User not found or inactive' });
@@ -28,6 +32,7 @@ const auth = async (req, res, next) => {
 
     req.user = user;
     req.token = token;
+    req.tokenRecord = tokenRecord;
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {

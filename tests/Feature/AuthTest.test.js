@@ -80,22 +80,30 @@ describe('Authentication API Feature Tests', () => {
   });
 
   describe('DELETE /api/logout', () => {
-    test('returns 200 and logs out successfully', async () => {
+    test('returns 200 and logs out successfully, removing token from database', async () => {
+      // Verify token exists in database before logout
+      const beforeLogout = await db('tokens').where({ token: authToken }).first();
+      expect(beforeLogout).toBeDefined();
+
       const res = await request(app)
         .delete('/api/logout')
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.message).toBe('Successfully logged out.');
+
+      // Verify token is removed from database
+      const afterLogout = await db('tokens').where({ token: authToken }).first();
+      expect(afterLogout).toBeUndefined();
     });
 
-    test('rejects subsequent requests using the invalidated token', async () => {
+    test('rejects subsequent requests using the revoked token', async () => {
       const res = await request(app)
         .get('/api/profile')
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(401);
-      expect(res.body.message).toBe('Unauthorized: Token has been revoked');
+      expect(res.body.message).toContain('Unauthorized: Invalid or revoked token');
     });
   });
 });

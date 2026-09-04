@@ -1,12 +1,12 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
-const { blacklistToken } = require('../../middleware/blacklist');
+const Token = require('../../models/Token');
 
 class LoginController {
   /**
    * POST /api/login
-   * Resource method: store (create authenticated session)
+   * Resource method: store (authenticate user, issue JWT, store in tokens table)
    */
   static async store(req, res) {
     try {
@@ -47,6 +47,13 @@ class LoginController {
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
       );
 
+      // Persist token in tokens table with user_id
+      await Token.create({
+        user_id: user.id,
+        token,
+        name: 'auth_token'
+      });
+
       return res.status(200).json({
         message: 'Login successful.',
         token,
@@ -66,13 +73,20 @@ class LoginController {
 
   /**
    * DELETE /api/logout
-   * Resource method: delete / destroy (delete authenticated session)
+   * Resource method: delete / destroy (revoke token from tokens table)
    */
   static async delete(req, res) {
-    blacklistToken(req.token);
-    return res.status(200).json({
-      message: 'Successfully logged out.'
-    });
+    try {
+      if (req.token) {
+        await Token.revoke(req.token);
+      }
+      return res.status(200).json({
+        message: 'Successfully logged out.'
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+      return res.status(500).json({ message: 'Internal server error.' });
+    }
   }
 
   // Alias for Laravel destroy convention
