@@ -16,6 +16,7 @@ exports.up = function(knex) {
     table.timestamp('email_verified_at').nullable();
     table.timestamp('phone_verified_at').nullable();
     table.timestamps(true, true);
+    table.timestamp('deleted_at').nullable();
   });
 };
 
