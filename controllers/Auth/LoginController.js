@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../../models/User');
 const Token = require('../../models/Token');
+const HTTP_STATUS = require('../../constants/httpStatus');
 
 class LoginController {
   /**
@@ -18,7 +19,8 @@ class LoginController {
       if (!password) errors.password = 'The password field is required.';
 
       if (Object.keys(errors).length > 0) {
-        return res.status(422).json({
+        return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
+          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -27,7 +29,8 @@ class LoginController {
       // Check user existence
       const user = await User.findByEmail(email);
       if (!user) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+          success: false,
           message: 'Invalid email or password.'
         });
       }
@@ -35,7 +38,8 @@ class LoginController {
       // Verify bcrypt password hash
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
-        return res.status(401).json({
+        return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+          success: false,
           message: 'Invalid email or password.'
         });
       }
@@ -54,7 +58,8 @@ class LoginController {
         name: 'auth_token'
       });
 
-      return res.status(200).json({
+      return res.status(HTTP_STATUS.OK).json({
+        success: true,
         message: 'Login successful.',
         token,
         user: {
@@ -67,7 +72,10 @@ class LoginController {
       });
     } catch (error) {
       console.error('Login error:', error);
-      return res.status(500).json({ message: 'Internal server error.' });
+      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'Internal server error.'
+      });
     }
   }
 
@@ -80,12 +88,16 @@ class LoginController {
       if (req.token) {
         await Token.revoke(req.token);
       }
-      return res.status(200).json({
+      return res.status(HTTP_STATUS.OK).json({
+        success: true,
         message: 'Successfully logged out.'
       });
     } catch (error) {
       console.error('Logout error:', error);
-      return res.status(500).json({ message: 'Internal server error.' });
+      return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: 'Internal server error.'
+      });
     }
   }
 

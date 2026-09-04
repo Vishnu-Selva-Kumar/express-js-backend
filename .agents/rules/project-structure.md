@@ -7,6 +7,9 @@ All AI agents and developers must strictly adhere to the following directory str
 ```text
 express-app/
 │
+├── constants/                 # Centralized constants & status codes
+│   └── httpStatus.js          # HTTP_STATUS constants (avoid magic numbers)
+│
 ├── database/
 │   ├── db.js                  # Knex connection pool instance
 │   ├── migrations/            # Database migration files (Knex)
@@ -44,12 +47,17 @@ express-app/
 
 ## Directory Responsibilities
 
-### 1. `database/`
+### 1. `constants/`
+- **`constants/httpStatus.js`**: Frozen HTTP status code constants (`HTTP_STATUS.OK`, `HTTP_STATUS.UNAUTHORIZED`, `HTTP_STATUS.UNPROCESSABLE_ENTITY`, etc.).
+- **Rule:** **Never use hardcoded magic numbers (e.g., `200`, `401`, `422`, `500`)** in controllers, middleware, or test assertions. Always import and use `HTTP_STATUS`.
+- **Response Format:** Standardize API responses with `{ success: boolean, message: string, ... }`.
+
+### 2. `database/`
 - **`database/db.js`**: Central Knex instance configured with environment settings.
 - **`database/migrations/`**: Contains Knex migration files. Must follow timestamp prefixes (`YYYYMMDDHHMMSS_create_tablename_table.js`).
 - **`database/seeds/`**: Contains database seeders. Must follow deterministic numeric prefixes (e.g., `01_roles_seeder.js`, `02_users_seeder.js`) and use upsert (`onConflict().merge()`) where applicable.
 
-### 2. `controllers/`
+### 3. `controllers/`
 - **Naming:** PascalCase with `Controller` suffix (e.g., `LoginController.js`, `ProfileController.js`).
 - **Resource Controller Convention (Laravel Style):**
   - `index(req, res)`: Display a listing of the resource.
@@ -59,21 +67,21 @@ express-app/
   - `delete(req, res)` or `destroy(req, res)`: Remove the specified resource (e.g., `DELETE /api/logout` session delete).
 - **Rule:** Do not write raw SQL or complex database queries directly in controllers; delegate data operations to models.
 
-### 3. `middleware/`
-- **Naming:** camelCase or lowercase (e.g., `auth.js`, `blacklist.js`).
+### 4. `middleware/`
+- **Naming:** camelCase or lowercase (e.g., `auth.js`, `validate.js`).
 - **Responsibility:** Request preprocessing, JWT authentication checks, token revocation, role/permission verification, and error handling.
-- **Rule:** Must call `next()` on success or return an early error response.
+- **Rule:** Must call `next()` on success or return an early error response with `HTTP_STATUS` constants.
 
-### 4. `routes/`
+### 5. `routes/`
 - **Naming:** `routes/api.js` for API endpoints.
 - **Responsibility:** Thin routing layer mapping HTTP methods (`GET`, `POST`, `PUT`, `DELETE`) and URL paths to controller actions and middleware guards.
 - **Rule:** Do not embed business or database logic directly inside route callbacks.
 
-### 5. `models/`
-- **Naming:** Singular PascalCase (e.g., `User.js`, `Role.js`).
+### 6. `models/`
+- **Naming:** Singular PascalCase (e.g., `User.js`, `Token.js`, `Role.js`).
 - **Responsibility:** Knex query builders, table associations, scopes, and database access methods.
 
-### 6. `tests/`
+### 7. `tests/`
 - **`tests/Unit/`**: Tests focusing on individual models, functions, and isolated business logic.
 - **`tests/Feature/`**: End-to-end integration tests using `supertest` verifying full HTTP request-response lifecycles, status codes, and database state.
 
@@ -86,6 +94,8 @@ express-app/
    - Implement resource methods (`index`, `store`, `show`, `update`, `delete`) in `controllers/`.
    - Place database queries in `models/`.
    - Place auth/validation interceptors in `middleware/`.
+   - Use `HTTP_STATUS` constants for all response status codes and assertions.
    - Add corresponding test cases in `tests/Feature/` and `tests/Unit/`.
-2. **Never create ad-hoc root directories:** Do not create top-level folders outside this specified structure.
-3. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeds`.
+2. **Never use magic numbers:** Always use `HTTP_STATUS.<CODE>` from `constants/httpStatus.js`.
+3. **Never create ad-hoc root directories:** Do not create top-level folders outside this specified structure.
+4. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeds`.

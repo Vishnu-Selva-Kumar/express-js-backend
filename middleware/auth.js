@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const Token = require('../models/Token');
+const HTTP_STATUS = require('../constants/httpStatus');
 
 /**
  * Authentication Middleware
@@ -10,7 +11,10 @@ const auth = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Unauthorized: No token provided' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized: No token provided'
+      });
     }
 
     const token = authHeader.split(' ')[1];
@@ -18,7 +22,10 @@ const auth = async (req, res, next) => {
     // Check database token validity
     const tokenRecord = await Token.findValidToken(token);
     if (!tokenRecord) {
-      return res.status(401).json({ message: 'Unauthorized: Invalid or revoked token.' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized: Invalid or revoked token.'
+      });
     }
 
     // Verify JWT signature & expiration
@@ -27,7 +34,10 @@ const auth = async (req, res, next) => {
     // Verify user exists and is active
     const user = await User.findById(decoded.id);
     if (!user) {
-      return res.status(401).json({ message: 'Unauthorized: User not found or inactive' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized: User not found or inactive'
+      });
     }
 
     req.user = user;
@@ -36,9 +46,15 @@ const auth = async (req, res, next) => {
     next();
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
-      return res.status(401).json({ message: 'Unauthorized: Token expired' });
+      return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized: Token expired'
+      });
     }
-    return res.status(401).json({ message: 'Unauthorized: Invalid token' });
+    return res.status(HTTP_STATUS.UNAUTHORIZED).json({
+      success: false,
+      message: 'Unauthorized: Invalid token'
+    });
   }
 };
 

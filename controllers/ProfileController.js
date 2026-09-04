@@ -1,10 +1,14 @@
+const HTTP_STATUS = require('../constants/httpStatus');
+
 class ProfileController {
   /**
    * GET /api/profile
    * Resource method: show (display authenticated user profile)
    */
   static async show(req, res) {
-    return res.status(200).json({
+    return res.status(HTTP_STATUS.OK).json({
+      success: true,
+      message: 'Profile details.',
       user: req.user
     });
   }
