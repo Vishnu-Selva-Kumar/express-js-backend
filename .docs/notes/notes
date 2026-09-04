@@ -1,0 +1,3 @@
+// docker exec instraction 
+
+docker compose exec app npm install --save-dev knex
