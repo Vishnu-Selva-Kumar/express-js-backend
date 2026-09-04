@@ -81,25 +81,6 @@ All migration commands must be run through Docker:
 | **Rollback last batch** | `docker compose exec app npm run migrate:rollback` |
 | **Create a new migration** | `docker compose exec app npm run migrate:make <name>` |
 
-### Database Tables
-
-#### `roles`
-- `id` (Primary Key, Auto-increment)
-- `name` (VARCHAR 255, Not Null)
-- `created_at`, `updated_at` (Timestamps)
-
-#### `users`
-- `id` (Primary Key, Auto-increment)
-- `role_id` (Foreign Key referencing `roles.id`, CASCADE on delete/update)
-- `name` (VARCHAR 255, Not Null)
-- `email` (VARCHAR 255, Unique, Not Null)
-- `phone` (VARCHAR 50, Nullable)
-- `password` (VARCHAR 255, Not Null)
-- `email_verified_at` (Timestamp, Nullable)
-- `phone_verified_at` (Timestamp, Nullable)
-- `created_at`, `updated_at` (Timestamps)
-- `deleted_at` (Timestamp, Nullable — Soft Delete)
-
 ---
 
 ## Development & Docker Commands
@@ -137,45 +118,3 @@ docker compose exec mysql mysql -uexpress_js -ppassword express_js
 ```bash
 docker compose restart app
 ```
-
----
-
-## Project Structure
-
-```text
-.
-├── .agents/
-│   └── rules/
-│       ├── commit_type.yml       # Conventional Commits rule specification
-│       └── express-docker.md     # AI agent Docker execution rules
-├── .docs/
-│   └── notes/                    # Developer setup notes
-├── migrations/
-│   ├── 20260904144927_create_roles_table.js
-│   └── 20260904144942_create_users_table.js
-├── .dockerignore
-├── .env.example
-├── .gitignore
-├── docker-compose.yml
-├── Dockerfile
-├── index.js
-├── knexfile.js
-├── package.json
-└── README.md
-```
-
----
-
-## Git Commit Guidelines
-
-This repository enforces **Conventional Commits** via `.agents/rules/commit_type.yml`:
-
-```text
-<type>(<scope>): <short description>
-```
-
-Examples:
-- `feat(user): add user registration endpoint`
-- `feat(migration): add softdelete to users table`
-- `fix(auth): resolve jwt token expiration error`
-- `chore(deps): update mysql2 package`
