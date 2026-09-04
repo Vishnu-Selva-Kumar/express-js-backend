@@ -1,3 +1,14 @@
-// docker exec instraction 
+## install node js and package without node application
+
+docker run --rm -v "%cd%:/app" -w /app node:22-alpine npm init -y
+
+docker run --rm -v "%cd%:/app" -w /app node:22-alpine npm install express mysql2 dotenv
+
+
+
+// docker exec instraction
 
 docker compose exec app npm install --save-dev knex
+
+
+docker compose exec app npm run migrate:rollback
