@@ -1,12 +1,25 @@
 require('dotenv').config();
 const express = require('express');
+const apiRoutes = require('./routes/api');
+
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Body parser
+app.use(express.json());
+
+// Routes
 app.get('/', (req, res) => {
-    res.send('Hello from Express inside Docker!');
+  res.send('Hello from Express inside Docker!');
 });
 
-app.listen(port, () => {
+app.use('/api', apiRoutes);
+
+// Only listen if not imported by test runner
+if (process.env.NODE_ENV !== 'test') {
+  app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
-});
+  });
+}
+
+module.exports = app;

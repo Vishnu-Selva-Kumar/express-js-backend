@@ -138,3 +138,14 @@ docker compose exec mysql mysql -uexpress_js -ppassword express_js
 ```bash
 docker compose restart app
 ```
+
+---
+
+## Running Tests
+
+Run Unit and Feature test suites inside the Docker container:
+
+```bash
+docker compose exec app npm test
+```
+
