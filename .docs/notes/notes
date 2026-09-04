@@ -4,11 +4,23 @@ docker run --rm -v "%cd%:/app" -w /app node:22-alpine npm init -y
 
 docker run --rm -v "%cd%:/app" -w /app node:22-alpine npm install express mysql2 dotenv
 
-
-
-// docker exec instraction
+## docker exec instraction
 
 docker compose exec app npm install --save-dev knex
 
-
 docker compose exec app npm run migrate:rollback
+## without docker
+npx knex migrate:latest
+
+## Execute Seeders:
+
+docker compose exec app npm run seed
+
+## with out docker seeder in file
+npx knex seed:run
+
+
+## Verify Database Content in MySQL:
+
+docker compose exec mysql mysql -uexpress_js -ppassword -e "USE express_js; SELECT * FROM roles; SELECT id, role_id, name, email, password FROM users;"
+

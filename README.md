@@ -69,6 +69,13 @@ Execute Knex migrations inside the container:
 docker compose exec app npm run migrate
 ```
 
+### 4. Run Database Seeders
+Seed default roles and initial admin user:
+
+```bash
+docker compose exec app npm run seed
+```
+
 ---
 
 ## Database Migrations (Knex.js)
@@ -80,6 +87,19 @@ All migration commands must be run through Docker:
 | **Run pending migrations** | `docker compose exec app npm run migrate` |
 | **Rollback last batch** | `docker compose exec app npm run migrate:rollback` |
 | **Create a new migration** | `docker compose exec app npm run migrate:make <name>` |
+
+---
+
+## Database Seeders (Knex.js)
+
+| Action | Command |
+| :--- | :--- |
+| **Run all seeders** | `docker compose exec app npm run seed` |
+| **Create a new seeder** | `docker compose exec app npm run seed:make <name>` |
+
+**Seeded Defaults:**
+- **Roles:** `Administrator` (ID: 1), `Users` (ID: 2)
+- **Admin User:** `admin@example.com` / `password` (bcrypt hashed)
 
 ---
 
