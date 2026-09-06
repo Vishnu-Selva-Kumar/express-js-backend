@@ -1,6 +1,7 @@
 const request = require('supertest');
 const app = require('../../index');
 const db = require('../../database/db');
+const routes = require('../../routes/routeNames');
 const HTTP_STATUS = require('../../constants/httpStatus');
 
 describe('Authentication API Feature Tests', () => {
@@ -10,10 +11,10 @@ describe('Authentication API Feature Tests', () => {
     await db.destroy();
   });
 
-  describe('POST /api/login', () => {
+  describe(`POST ${routes.api.login}`, () => {
     test('returns 200 and JWT token with valid credentials', async () => {
       const res = await request(app)
-        .post('/api/login')
+        .post(routes.api.login)
         .send({
           email: 'admin@example.com',
           password: 'password'
@@ -31,7 +32,7 @@ describe('Authentication API Feature Tests', () => {
 
     test('returns 401 when password is incorrect', async () => {
       const res = await request(app)
-        .post('/api/login')
+        .post(routes.api.login)
         .send({
           email: 'admin@example.com',
           password: 'wrongpassword'
@@ -44,7 +45,7 @@ describe('Authentication API Feature Tests', () => {
 
     test('returns 422 validation error when required fields are missing', async () => {
       const res = await request(app)
-        .post('/api/login')
+        .post(routes.api.login)
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
@@ -54,10 +55,10 @@ describe('Authentication API Feature Tests', () => {
     });
   });
 
-  describe('GET /api/profile', () => {
+  describe(`GET ${routes.api.profile}`, () => {
     test('returns 200 and profile when authenticated with Bearer token', async () => {
       const res = await request(app)
-        .get('/api/profile')
+        .get(routes.api.profile)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
@@ -68,7 +69,7 @@ describe('Authentication API Feature Tests', () => {
     });
 
     test('returns 401 when no authorization token is provided', async () => {
-      const res = await request(app).get('/api/profile');
+      const res = await request(app).get(routes.api.profile);
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
       expect(res.body.success).toBe(false);
@@ -77,7 +78,7 @@ describe('Authentication API Feature Tests', () => {
 
     test('returns 401 when an invalid token is provided', async () => {
       const res = await request(app)
-        .get('/api/profile')
+        .get(routes.api.profile)
         .set('Authorization', 'Bearer invalid.token.here');
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
@@ -86,14 +87,14 @@ describe('Authentication API Feature Tests', () => {
     });
   });
 
-  describe('DELETE /api/logout', () => {
+  describe(`DELETE ${routes.api.logout}`, () => {
     test('returns 200 and logs out successfully, removing token from database', async () => {
       // Verify token exists in database before logout
       const beforeLogout = await db('tokens').where({ token: authToken }).first();
       expect(beforeLogout).toBeDefined();
 
       const res = await request(app)
-        .delete('/api/logout')
+        .delete(routes.api.logout)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
@@ -107,7 +108,7 @@ describe('Authentication API Feature Tests', () => {
 
     test('rejects subsequent requests using the revoked token', async () => {
       const res = await request(app)
-        .get('/api/profile')
+        .get(routes.api.profile)
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);

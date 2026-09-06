@@ -30,6 +30,7 @@ A production-ready containerized Express.js application powered by MySQL 8.4, Kn
 ## Quick Start
 
 ### 1. Configure Environment Variables
+
 Copy `.env.example` to `.env` (or configure your own):
 
 ```bash
@@ -37,8 +38,9 @@ cp .env.example .env
 ```
 
 Default credentials in `.env`:
+
 ```env
-PORT=3000
+APP_PORT=3000
 NODE_ENV=development
 
 DB_CONNECTION=mysql
@@ -51,6 +53,7 @@ MYSQL_ROOT_PASSWORD=password
 ```
 
 ### 2. Start the Application
+
 Build and start all containers in detached mode:
 
 ```bash
@@ -58,11 +61,13 @@ docker compose up --build -d
 ```
 
 Check the status of the containers:
+
 ```bash
 docker compose ps
 ```
 
 ### 3. Run Database Migrations
+
 Execute Knex migrations inside the container:
 
 ```bash
@@ -70,6 +75,7 @@ docker compose exec app npm run migrate
 ```
 
 ### 4. Run Database Seeders
+
 Seed default roles and initial admin user:
 
 ```bash
@@ -98,6 +104,7 @@ All migration commands must be run through Docker:
 | **Create a new seeder** | `docker compose exec app npm run seed:make <name>` |
 
 **Seeded Defaults:**
+
 - **Roles:** `Administrator` (ID: 1), `Users` (ID: 2)
 - **Admin User:** `admin@example.com` / `password` (bcrypt hashed)
 
@@ -106,6 +113,7 @@ All migration commands must be run through Docker:
 ## Development & Docker Commands
 
 ### Installing Packages
+
 Do not run `npm install` on your host. Use Docker:
 
 ```bash
@@ -117,6 +125,7 @@ docker compose exec app npm install --save-dev <package_name>
 ```
 
 ### Viewing Logs
+
 ```bash
 # Stream app logs
 docker compose logs -f app
@@ -126,6 +135,7 @@ docker compose logs -f mysql
 ```
 
 ### Accessing Containers Shell
+
 ```bash
 # Express app shell
 docker compose exec app sh
@@ -135,6 +145,7 @@ docker compose exec mysql mysql -uexpress_js -ppassword express_js
 ```
 
 ### Restarting Services
+
 ```bash
 docker compose restart app
 ```
@@ -148,4 +159,3 @@ Run Unit and Feature test suites inside the Docker container:
 ```bash
 docker compose exec app npm test
 ```
-

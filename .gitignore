@@ -30,3 +30,8 @@ Thumbs.db
 # Build outputs
 dist/
 build/
+
+# Uploaded storage files
+storage/app/**/*
+!storage/app/**/.gitkeep
+
