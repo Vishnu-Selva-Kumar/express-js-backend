@@ -36,7 +36,23 @@ const createUploader = ({
     }
   });
 
+  const EXT_TO_MIME = {
+    '.jpg': 'image/jpeg',
+    '.jpeg': 'image/jpeg',
+    '.png': 'image/png',
+    '.webp': 'image/webp',
+    '.gif': 'image/gif'
+  };
+
   const fileFilter = (req, file, cb) => {
+    // If client (e.g. Postman on certain OS) sends application/octet-stream or empty mimetype, fallback to extension
+    if ((!file.mimetype || file.mimetype === 'application/octet-stream') && file.originalname) {
+      const ext = path.extname(file.originalname).toLowerCase();
+      if (EXT_TO_MIME[ext]) {
+        file.mimetype = EXT_TO_MIME[ext];
+      }
+    }
+
     if (allowedMimeTypes.length && !allowedMimeTypes.includes(file.mimetype)) {
       const error = new Error(`Invalid file type: ${file.mimetype}. Allowed types: ${allowedMimeTypes.join(', ')}`);
       error.code = 'INVALID_FILE_TYPE';
