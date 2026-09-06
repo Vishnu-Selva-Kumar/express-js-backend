@@ -3,6 +3,8 @@ const express = require('express');
 const webRoutes = require('./routes/web');
 const apiRoutes = require('./routes/api');
 
+const routes = require('./routes/routeNames');
+
 const app = express();
 const port = process.env.APP_PORT || 3000;
 
@@ -10,7 +12,7 @@ const port = process.env.APP_PORT || 3000;
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
+app.get(routes.web.home, (req, res) => {
   res.send('<h1>Welcome to Express.js!</h1>');
 });
 

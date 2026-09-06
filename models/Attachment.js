@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const db = require('../database/db');
+const routes = require('../routes/routeNames');
 
 class Attachment {
   /**
@@ -189,10 +190,11 @@ class Attachment {
       ? attachment.file_path.slice(1)
       : attachment.file_path;
 
+    const mediaPath = routes.mediaUrl(attachment.id, cleanPath);
     return {
       ...attachment,
-      url: `${cleanBase}/media/${attachment.id}/${cleanPath}`,
-      full_url: `${cleanBase}/media/${attachment.id}/${cleanPath}`
+      url: `${cleanBase}${mediaPath}`,
+      full_url: `${cleanBase}${mediaPath}`
     };
   }
 }

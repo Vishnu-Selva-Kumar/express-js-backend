@@ -10,6 +10,7 @@ const routes = Object.freeze({
   }),
 
   web: Object.freeze({
+    home: '/',
     media: '/media/:id/{*path}',
   }),
 
