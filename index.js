@@ -1,19 +1,23 @@
 require('dotenv').config();
 const express = require('express');
+const webRoutes = require('./routes/web');
 const apiRoutes = require('./routes/api');
 
+const routes = require('./routes/routeNames');
+
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.APP_PORT || 3000;
 
 // Body parser
 app.use(express.json());
 
 // Routes
-app.get('/', (req, res) => {
-  res.send('Hello from Express inside Docker!');
+app.get(routes.web.home, (req, res) => {
+  res.send('<h1>Welcome to Express.js!</h1>');
 });
 
-app.use('/api', apiRoutes);
+app.use(webRoutes);
+app.use(apiRoutes);
 
 // Only listen if not imported by test runner
 if (process.env.NODE_ENV !== 'test') {

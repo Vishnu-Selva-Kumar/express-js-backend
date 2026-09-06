@@ -44,9 +44,9 @@ class LoginController {
         });
       }
 
-      // Generate JWT
+      // Generate JWT with unique identifier
       const token = jwt.sign(
-        { id: user.id, email: user.email, role_id: user.role_id },
+        { id: user.id, email: user.email, role_id: user.role_id, jti: `${Date.now()}-${Math.round(Math.random() * 1e9)}` },
         process.env.JWT_SECRET || 'super_secret_jwt_key_here',
         { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
       );

@@ -39,6 +39,30 @@ class User {
       .whereNull('users.deleted_at')
       .first();
   }
+
+  /**
+   * Update user profile attributes by ID
+   * @param {number} id
+   * @param {Object} data
+   * @returns {Promise<Object|undefined>}
+   */
+  static async update(id, data) {
+    const allowedFields = ['name', 'phone'];
+    const updatePayload = {};
+
+    for (const field of allowedFields) {
+      if (data[field] !== undefined) {
+        updatePayload[field] = data[field];
+      }
+    }
+
+    if (Object.keys(updatePayload).length > 0) {
+      updatePayload.updated_at = db.fn.now();
+      await db('users').where({ id }).update(updatePayload);
+    }
+
+    return User.findById(id);
+  }
 }
 
 module.exports = User;
