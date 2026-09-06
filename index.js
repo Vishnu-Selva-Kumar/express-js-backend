@@ -11,7 +11,7 @@ app.use(express.json());
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('Hello from Express inside Docker!');
+  res.send('<h1>Welcome to Express.js!</h1>');
 });
 
 app.use(webRoutes);
