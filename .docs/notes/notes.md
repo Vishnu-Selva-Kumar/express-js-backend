@@ -47,9 +47,10 @@ docker compose exec app npm run seed
 docker compose exec app npm test
 ```
 
-### Restart Server
+### Restart Server (When needed)
 ```bash
-# Restart the app container (e.g. after backend code changes)
+# Nodemon automatically reloads the server on file save!
+# Only restart the container manually when changing .env or Docker configurations:
 docker compose restart app
 ```
 
