@@ -80,3 +80,23 @@ Inspect database tables and seed data directly in the MySQL container:
 ```bash
 docker compose exec mysql mysql -uexpress_js -ppassword -e "USE express_js; SELECT * FROM roles; SELECT id, role_id, name, email, password FROM users;"
 ```
+
+---
+
+## 5. Environment & Version Inspection (via Docker)
+
+Check runtime versions (Node.js, npm, package versions) inside the running application container:
+
+```bash
+# Check Node.js version
+docker compose exec app node -v
+
+# Check npm version
+docker compose exec app npm -v
+
+# Check installed Express version
+docker compose exec app npm list express --depth=0
+
+# Combined check
+docker compose exec app sh -c "node -v && npm -v && npm list express --depth=0"
+```
