@@ -63,5 +63,16 @@ services:
       mysql:
         condition: service_healthy
 
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: node-mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: ""
+
 volumes:
   mysql_data:

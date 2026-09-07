@@ -5,6 +5,12 @@
 const routes = Object.freeze({
   api: Object.freeze({
     login: '/api/login',
+    register: '/api/register',
+    verifyEmail: '/api/verify-email',
+    verifyPhone: '/api/verify-phone',
+    forgotPassword: '/api/forgot-password',
+    verifyResetToken: '/api/verify-reset-token',
+    resetPassword: '/api/reset-password',
     profile: '/api/profile',
     logout: '/api/logout',
   }),
@@ -21,6 +27,28 @@ const routes = Object.freeze({
    * @returns {string}
    */
   mediaUrl: (id, path) => `/media/${id}/${path}`,
+
+  /**
+   * Generate password reset verification URL
+   * @param {string} token
+   * @param {string} email
+   * @returns {string}
+   */
+  resetPasswordUrl: (token, email) => {
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    return `${baseUrl}/reset-password?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
+  },
+
+  /**
+   * Generate email verification URL
+   * @param {string} token
+   * @param {string} email
+   * @returns {string}
+   */
+  verifyEmailUrl: (token, email) => {
+    const baseUrl = process.env.APP_URL || 'http://localhost:3000';
+    return `${baseUrl}/verify-email?token=${encodeURIComponent(token)}&email=${encodeURIComponent(email)}`;
+  },
 });
 
 module.exports = routes;
