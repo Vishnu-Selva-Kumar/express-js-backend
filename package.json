@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "imports": {
+    "#app": "./index.js",
     "#controllers/*": "./controllers/*.js",
     "#models/*": "./models/*.js",
     "#middleware/*": "./middleware/*.js",

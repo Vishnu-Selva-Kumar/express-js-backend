@@ -17,6 +17,7 @@ All root-level project domains are mapped via the native Node.js `imports` field
 
 | Alias Prefix | Target Directory | Common Examples |
 | :--- | :--- | :--- |
+| **`#app`** | `./index.js` | `const app = require('#app');` |
 | **`#models/*`** | `./models/*.js` | `const User = require('#models/User');`<br>`const Role = require('#models/Role');` |
 | **`#controllers/*`** | `./controllers/*.js` | `const LoginController = require('#controllers/Auth/LoginController');` |
 | **`#middleware/*`** | `./middleware/*.js` | `const auth = require('#middleware/auth');`<br>`const { uploadProfile } = require('#middleware/upload');` |
@@ -102,12 +103,14 @@ const User = require('#models/User');
 ### In Automated Tests (`tests/**/*.test.js`):
 ```javascript
 // ❌ INCORRECT:
+const app = require('../../index');
 const db = require('../../database/db');
 const routes = require('../../routes/routeNames');
 const HTTP_STATUS = require('../../constants/httpStatus');
 const User = require('../../models/User');
 
 // ✅ CORRECT:
+const app = require('#app');
 const db = require('#database/db');
 const routes = require('#routes/routeNames');
 const HTTP_STATUS = require('#constants/httpStatus');
@@ -121,6 +124,6 @@ const User = require('#models/User');
 Before committing changes, all AI agents must verify:
 
 - [ ] No `../../` cross-directory relative require paths exist in new or modified files.
-- [ ] All cross-directory imports use `#models/*`, `#controllers/*`, `#middleware/*`, `#constants/*`, `#routes/*`, `#config/*`, or `#database/*`.
+- [ ] All cross-directory imports use `#app`, `#models/*`, `#controllers/*`, `#middleware/*`, `#constants/*`, `#routes/*`, `#config/*`, or `#database/*`.
 - [ ] No `.js` extension is appended to `#*` alias paths.
 - [ ] All tests pass inside Docker (`docker compose exec app npm test`).
