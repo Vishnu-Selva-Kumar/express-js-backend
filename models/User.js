@@ -1,4 +1,5 @@
-const db = require('../database/db');
+const db = require('#database/db');
+const Role = require('#models/Role');
 
 class User {
   /**
@@ -60,6 +61,83 @@ class User {
       updatePayload.updated_at = db.fn.now();
       await db('users').where({ id }).update(updatePayload);
     }
+
+    return User.findById(id);
+  }
+
+  /**
+   * Create a new user record
+   * @param {Object} data
+   * @param {number} [data.role_id=2] Default regular user
+   * @param {string} data.name
+   * @param {string} data.email
+   * @param {string} [data.phone]
+   * @param {string} data.password - Hashed password
+   * @param {Date|null} [data.email_verified_at]
+   * @param {Date|null} [data.phone_verified_at]
+   * @returns {Promise<Object>}
+   */
+  static async create(data) {
+    const [id] = await db('users').insert({
+      role_id: data.role_id || Role.ROLE_USER,
+      name: data.name,
+      email: data.email,
+      phone: data.phone || null,
+      password: data.password,
+      email_verified_at: data.email_verified_at || null,
+      phone_verified_at: data.phone_verified_at || null,
+      created_at: db.fn.now(),
+      updated_at: db.fn.now()
+    });
+
+    return User.findById(id);
+  }
+
+  /**
+   * Update user password by ID
+   * @param {number} id
+   * @param {string} hashedPassword
+   * @returns {Promise<Object|undefined>}
+   */
+  static async updatePassword(id, hashedPassword) {
+    await db('users')
+      .where({ id })
+      .update({
+        password: hashedPassword,
+        updated_at: db.fn.now()
+      });
+
+    return User.findById(id);
+  }
+
+  /**
+   * Mark user's email as verified
+   * @param {number} id
+   * @returns {Promise<Object|undefined>}
+   */
+  static async markEmailAsVerified(id) {
+    await db('users')
+      .where({ id })
+      .update({
+        email_verified_at: db.fn.now(),
+        updated_at: db.fn.now()
+      });
+
+    return User.findById(id);
+  }
+
+  /**
+   * Mark user's phone as verified
+   * @param {number} id
+   * @returns {Promise<Object|undefined>}
+   */
+  static async markPhoneAsVerified(id) {
+    await db('users')
+      .where({ id })
+      .update({
+        phone_verified_at: db.fn.now(),
+        updated_at: db.fn.now()
+      });
 
     return User.findById(id);
   }

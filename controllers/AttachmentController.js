@@ -1,11 +1,11 @@
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
-const Attachment = require('../models/Attachment');
-const User = require('../models/User');
-const Token = require('../models/Token');
-const HTTP_STATUS = require('../constants/httpStatus');
-const { PUBLIC_ATTACHMENT_TYPES } = require('../constants/attachment');
+const Attachment = require('#models/Attachment');
+const User = require('#models/User');
+const Token = require('#models/Token');
+const HTTP_STATUS = require('#constants/httpStatus');
+const { PUBLIC_ATTACHMENT_TYPES } = require('#constants/attachment');
 
 class AttachmentController {
   /**

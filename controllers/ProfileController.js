@@ -1,8 +1,8 @@
 const path = require('path');
-const HTTP_STATUS = require('../constants/httpStatus');
-const User = require('../models/User');
-const Attachment = require('../models/Attachment');
-const { ATTACHABLE_TYPE, ATTACHMENT_FOR, ATTACHMENT_DESTINATIONS } = require('../constants/attachment');
+const HTTP_STATUS = require('#constants/httpStatus');
+const User = require('#models/User');
+const Attachment = require('#models/Attachment');
+const { ATTACHABLE_TYPE, ATTACHMENT_FOR, ATTACHMENT_DESTINATIONS } = require('#constants/attachment');
 
 class ProfileController {
   /**

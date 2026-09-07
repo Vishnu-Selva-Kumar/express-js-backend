@@ -1,5 +1,5 @@
-const Token = require('../../models/Token');
-const db = require('../../database/db');
+const Token = require('#models/Token');
+const db = require('#database/db');
 
 describe('Token Model Unit Tests', () => {
   const testToken = 'unit_test_jwt_token_sample';

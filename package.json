@@ -3,6 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#app": "./index.js",
+    "#controllers/*": "./controllers/*.js",
+    "#models/*": "./models/*.js",
+    "#middleware/*": "./middleware/*.js",
+    "#constants/*": "./constants/*.js",
+    "#routes/*": "./routes/*.js",
+    "#config/*": "./config/*.js",
+    "#database/*": "./database/*.js"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
@@ -22,7 +32,8 @@
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.3.0",
-    "mysql2": "^3.24.3"
+    "mysql2": "^3.24.3",
+    "nodemailer": "^10.0.1"
   },
   "devDependencies": {
     "jest": "^30.5.1",
