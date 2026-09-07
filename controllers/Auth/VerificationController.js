@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User');
-const Otp = require('../../models/Otp');
-const HTTP_STATUS = require('../../constants/httpStatus');
+const User = require('#models/User');
+const Otp = require('#models/Otp');
+const HTTP_STATUS = require('#constants/httpStatus');
 
 class VerificationController {
   /**

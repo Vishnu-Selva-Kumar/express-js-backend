@@ -1,9 +1,9 @@
 const crypto = require('crypto');
-const User = require('../../models/User');
-const PasswordReset = require('../../models/PasswordReset');
-const HTTP_STATUS = require('../../constants/httpStatus');
-const routes = require('../../routes/routeNames');
-const mail = require('../../config/mail');
+const User = require('#models/User');
+const PasswordReset = require('#models/PasswordReset');
+const HTTP_STATUS = require('#constants/httpStatus');
+const routes = require('#routes/routeNames');
+const mail = require('#config/mail');
 
 class ForgotPasswordController {
   /**

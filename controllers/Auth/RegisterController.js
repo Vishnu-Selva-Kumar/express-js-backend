@@ -1,10 +1,10 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const User = require('../../models/User');
-const Role = require('../../models/Role');
-const HTTP_STATUS = require('../../constants/httpStatus');
-const routes = require('../../routes/routeNames');
-const mail = require('../../config/mail');
+const User = require('#models/User');
+const Role = require('#models/Role');
+const HTTP_STATUS = require('#constants/httpStatus');
+const routes = require('#routes/routeNames');
+const mail = require('#config/mail');
 
 class RegisterController {
   /**

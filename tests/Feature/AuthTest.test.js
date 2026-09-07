@@ -1,8 +1,8 @@
 const request = require('supertest');
 const app = require('../../index');
-const db = require('../../database/db');
-const routes = require('../../routes/routeNames');
-const HTTP_STATUS = require('../../constants/httpStatus');
+const db = require('#database/db');
+const routes = require('#routes/routeNames');
+const HTTP_STATUS = require('#constants/httpStatus');
 
 describe('Authentication API Feature Tests', () => {
   let authToken = '';

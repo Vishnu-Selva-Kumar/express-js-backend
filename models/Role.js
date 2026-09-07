@@ -1,4 +1,4 @@
-const db = require('../database/db');
+const db = require('#database/db');
 
 class Role {
   static ROLE_ADMINISTRATOR = 1;

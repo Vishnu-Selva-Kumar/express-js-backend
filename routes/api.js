@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const routes = require('./routeNames');
-const LoginController = require('../controllers/Auth/LoginController');
-const RegisterController = require('../controllers/Auth/RegisterController');
-const VerificationController = require('../controllers/Auth/VerificationController');
-const ForgotPasswordController = require('../controllers/Auth/ForgotPasswordController');
-const ResetPasswordController = require('../controllers/Auth/ResetPasswordController');
-const ProfileController = require('../controllers/ProfileController');
-const auth = require('../middleware/auth');
-const { uploadProfile } = require('../middleware/upload');
+const routes = require('#routes/routeNames');
+const LoginController = require('#controllers/Auth/LoginController');
+const RegisterController = require('#controllers/Auth/RegisterController');
+const VerificationController = require('#controllers/Auth/VerificationController');
+const ForgotPasswordController = require('#controllers/Auth/ForgotPasswordController');
+const ResetPasswordController = require('#controllers/Auth/ResetPasswordController');
+const ProfileController = require('#controllers/ProfileController');
+const auth = require('#middleware/auth');
+const { uploadProfile } = require('#middleware/upload');
 
 // Public authentication & registration routes
 router.post(routes.api.login, LoginController.store);

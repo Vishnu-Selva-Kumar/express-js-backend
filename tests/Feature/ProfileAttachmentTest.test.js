@@ -2,11 +2,11 @@ const path = require('path');
 const fs = require('fs');
 const request = require('supertest');
 const app = require('../../index');
-const db = require('../../database/db');
-const routes = require('../../routes/routeNames');
-const Attachment = require('../../models/Attachment');
-const HTTP_STATUS = require('../../constants/httpStatus');
-const { ATTACHABLE_TYPE, ATTACHMENT_FOR } = require('../../constants/attachment');
+const db = require('#database/db');
+const routes = require('#routes/routeNames');
+const Attachment = require('#models/Attachment');
+const HTTP_STATUS = require('#constants/httpStatus');
+const { ATTACHABLE_TYPE, ATTACHMENT_FOR } = require('#constants/attachment');
 
 describe('Profile Attachment & Media Feature Tests', () => {
   let authToken = '';

@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "imports": {
+    "#controllers/*": "./controllers/*.js",
+    "#models/*": "./models/*.js",
+    "#middleware/*": "./middleware/*.js",
+    "#constants/*": "./constants/*.js",
+    "#routes/*": "./routes/*.js",
+    "#config/*": "./config/*.js",
+    "#database/*": "./database/*.js"
+  },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",

@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
-const db = require('../database/db');
-const routes = require('../routes/routeNames');
+const db = require('#database/db');
+const routes = require('#routes/routeNames');
 
 class Attachment {
   /**

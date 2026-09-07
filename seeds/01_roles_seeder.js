@@ -1,4 +1,4 @@
-const Role = require('../models/Role');
+const Role = require('#models/Role');
 
 /**
  * @param { import("knex").Knex } knex

@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
-const User = require('../../models/User');
-const PasswordReset = require('../../models/PasswordReset');
-const Token = require('../../models/Token');
-const HTTP_STATUS = require('../../constants/httpStatus');
+const User = require('#models/User');
+const PasswordReset = require('#models/PasswordReset');
+const Token = require('#models/Token');
+const HTTP_STATUS = require('#constants/httpStatus');
 
 class ResetPasswordController {
   /**

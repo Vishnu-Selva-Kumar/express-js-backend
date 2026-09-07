@@ -1,10 +1,10 @@
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 const app = require('../../index');
-const db = require('../../database/db');
-const routes = require('../../routes/routeNames');
-const HTTP_STATUS = require('../../constants/httpStatus');
-const Otp = require('../../models/Otp');
+const db = require('#database/db');
+const routes = require('#routes/routeNames');
+const HTTP_STATUS = require('#constants/httpStatus');
+const Otp = require('#models/Otp');
 
 describe('Registration & Verification Feature Tests', () => {
   const newUserEmail = 'newuser_test@example.com';

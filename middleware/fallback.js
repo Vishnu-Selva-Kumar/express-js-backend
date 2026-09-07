@@ -1,4 +1,4 @@
-const HTTP_STATUS = require('../constants/httpStatus');
+const HTTP_STATUS = require('#constants/httpStatus');
 
 /**
  * Recursively find all supported HTTP methods for a path across router layers

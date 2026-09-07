@@ -1,5 +1,5 @@
-const User = require('../../models/User');
-const db = require('../../database/db');
+const User = require('#models/User');
+const db = require('#database/db');
 
 describe('User Model Unit Tests', () => {
   afterAll(async () => {

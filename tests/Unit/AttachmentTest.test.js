@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-const Attachment = require('../../models/Attachment');
-const db = require('../../database/db');
-const { ATTACHABLE_TYPE, ATTACHMENT_FOR } = require('../../constants/attachment');
+const Attachment = require('#models/Attachment');
+const db = require('#database/db');
+const { ATTACHABLE_TYPE, ATTACHMENT_FOR } = require('#constants/attachment');
 
 describe('Attachment Model Unit Tests', () => {
   const testAttachableType = ATTACHABLE_TYPE.USER;

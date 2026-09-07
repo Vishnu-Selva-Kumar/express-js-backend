@@ -1,5 +1,5 @@
-const db = require('../database/db');
-const Role = require('./Role');
+const db = require('#database/db');
+const Role = require('#models/Role');
 
 class User {
   /**

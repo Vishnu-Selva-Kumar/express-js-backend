@@ -1,13 +1,13 @@
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
-const HTTP_STATUS = require('../constants/httpStatus');
+const HTTP_STATUS = require('#constants/httpStatus');
 const {
   DEFAULT_DESTINATION,
   ATTACHMENT_DESTINATIONS,
   ALLOWED_MIME_TYPES,
   MAX_FILE_SIZE
-} = require('../constants/attachment');
+} = require('#constants/attachment');
 
 /**
  * Factory to create reusable Multer upload middleware
