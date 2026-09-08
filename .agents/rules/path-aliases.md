@@ -25,6 +25,7 @@ All root-level project domains are mapped via the native Node.js `imports` field
 | **`#routes/*`** | `./routes/*.js` | `const routes = require('#routes/routeNames');` |
 | **`#config/*`** | `./config/*.js` | `const mail = require('#config/mail');` |
 | **`#database/*`** | `./database/*.js` | `const db = require('#database/db');` |
+| **`#helpers/*`** | `./helpers/*.js` | `const DateHelper = require('#helpers/dateHelper');` |
 
 ---
 

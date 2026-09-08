@@ -23,6 +23,9 @@ express-app/
 ├── middleware/                # Express request interceptors & guards
 │   └── auth.js                # JWT & database-backed token authentication guard
 │
+├── helpers/                   # Centralized pure helper functions
+│   └── dateHelper.js          # UTC conversions & localized app formatting
+│
 ├── routes/                    # API route declarations
 │   └── api.js                 # Central API route definitions
 │
@@ -84,6 +87,11 @@ express-app/
 ### 7. `tests/`
 - **`tests/Unit/`**: Tests focusing on individual models, functions, and isolated business logic.
 - **`tests/Feature/`**: End-to-end integration tests using `supertest` verifying full HTTP request-response lifecycles, status codes, and database state.
+
+### 8. `helpers/`
+- **Naming:** camelCase with `Helper` suffix (e.g., `dateHelper.js`).
+- **Responsibility:** Reusable pure helper functions (date/time manipulation, formatting) with zero heavy third-party bloat.
+- **Rule:** Standardize date handling per `.agents/rules/date-and-time.md`. Always import using `#helpers/*` alias.
 
 ---
 
