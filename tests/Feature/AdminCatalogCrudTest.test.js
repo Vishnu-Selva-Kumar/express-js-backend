@@ -24,7 +24,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
     if (adminLoginRes.status === HTTP_STATUS.OK) {
       adminToken = adminLoginRes.body.token;
     } else {
-      // Fallback create admin
       const adminUser = await User.findByEmail('admin@example.com');
       const token = jwt.sign(
         { id: adminUser.id, email: adminUser.email, role_id: Role.ROLE_ADMINISTRATOR, jti: `${Date.now()}-adm` },
@@ -62,16 +61,16 @@ describe('Admin Catalog CRUD Feature Tests', () => {
     test('rejects unauthenticated requests with 401 Unauthorized', async () => {
       const res = await request(app).get(routes.api.admin.categories);
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).toHaveProperty('message');
     });
 
-    test('rejects non-admin users with 403 Forbidden', async () => {
+    test('rejects non-admin users with 403 Forbidden (no success parameter)', async () => {
       const res = await request(app)
         .get(routes.api.admin.categories)
         .set('Authorization', `Bearer ${userToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.FORBIDDEN);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Forbidden: Admin access required.');
     });
   });
@@ -80,14 +79,15 @@ describe('Admin Catalog CRUD Feature Tests', () => {
     let createdCategoryId = null;
     const testCategoryName = `Sci-Fi & Cyberpunk ${Date.now()}`;
 
-    test('validates required fields on create (returns 422)', async () => {
+    test('validates required fields on create (returns 422 without success parameter)', async () => {
       const res = await request(app)
         .post(routes.api.admin.categories)
         .set('Authorization', `Bearer ${adminToken}`)
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
+      expect(res.body.message).toBe('Validation failed.');
       expect(res.body.errors).toHaveProperty('name');
     });
 
@@ -101,14 +101,14 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.CREATED);
-      expect(res.body.success).toBe(true);
+      expect(res.body.message).toBe('Category created successfully.');
       expect(res.body.data.name).toBe(testCategoryName);
       expect(res.body.data.status).toBe(1);
 
       createdCategoryId = res.body.data.id;
     });
 
-    test('prevents duplicate category names (returns 422)', async () => {
+    test('prevents duplicate category names (returns 422 without success parameter)', async () => {
       const res = await request(app)
         .post(routes.api.admin.categories)
         .set('Authorization', `Bearer ${adminToken}`)
@@ -117,7 +117,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors.name).toBe('A category with this name already exists.');
     });
 
@@ -127,7 +127,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(Array.isArray(res.body.data)).toBe(true);
       expect(res.body.data.some(c => c.id === createdCategoryId)).toBe(true);
     });
@@ -138,18 +137,18 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(res.body.data.id).toBe(createdCategoryId);
       expect(Array.isArray(res.body.data.sub_categories)).toBe(true);
     });
 
-    test('returns 404 for non-existent category', async () => {
+    test('returns 404 for non-existent category (no success parameter)', async () => {
       const res = await request(app)
         .get(routes.adminCategoryUrl(999999))
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
+      expect(res.body.message).toBe('Category not found.');
     });
 
     test('updates a category (returns 200)', async () => {
@@ -163,7 +162,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(res.body.data.name).toBe(updatedName);
       expect(res.body.data.status).toBe(0);
     });
@@ -174,7 +172,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body.message).toBe('Category deleted successfully.');
 
       const checkRes = await request(app)
         .get(routes.adminCategoryUrl(createdCategoryId))
@@ -210,7 +208,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('name');
     });
 
@@ -224,7 +222,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors.category_id).toBe('The selected category does not exist.');
     });
 
@@ -239,7 +237,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.CREATED);
-      expect(res.body.success).toBe(true);
       expect(res.body.data.name).toBe('Space Opera');
       expect(res.body.data.category_id).toBe(parentCategoryId);
 
@@ -252,7 +249,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(Array.isArray(res.body.data)).toBe(true);
     });
 
@@ -262,7 +258,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(res.body.data.id).toBe(createdSubCategoryId);
       expect(res.body.data.name).toBe('Space Opera');
     });
@@ -277,7 +272,6 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
       expect(res.body.data.name).toBe('Hard Science Fiction');
       expect(res.body.data.status).toBe(0);
     });
@@ -288,7 +282,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .set('Authorization', `Bearer ${adminToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body.message).toBe('Subcategory deleted successfully.');
 
       const checkRes = await request(app)
         .get(routes.adminSubCategoryUrl(createdSubCategoryId))
@@ -307,6 +301,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('name');
     });
 
@@ -373,6 +368,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('name');
     });
 
@@ -439,6 +435,7 @@ describe('Admin Catalog CRUD Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('name');
     });
 

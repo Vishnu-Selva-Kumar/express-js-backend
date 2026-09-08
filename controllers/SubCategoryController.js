@@ -11,14 +11,12 @@ class SubCategoryController {
     try {
       const subcategories = await SubCategory.all(req.query);
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Subcategories retrieved successfully.',
         data: subcategories
       });
     } catch (error) {
       console.error('Error fetching subcategories:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve subcategories.'
       });
     }
@@ -46,7 +44,6 @@ class SubCategoryController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -55,14 +52,12 @@ class SubCategoryController {
       const subcategory = await SubCategory.create({ name, category_id, status });
 
       return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
         message: 'Subcategory created successfully.',
         data: subcategory
       });
     } catch (error) {
       console.error('Error creating subcategory:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to create subcategory.'
       });
     }
@@ -77,20 +72,17 @@ class SubCategoryController {
       const subcategory = await SubCategory.findById(req.params.id);
       if (!subcategory) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Subcategory not found.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Subcategory retrieved successfully.',
         data: subcategory
       });
     } catch (error) {
       console.error('Error fetching subcategory:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve subcategory.'
       });
     }
@@ -105,7 +97,6 @@ class SubCategoryController {
       const subcategory = await SubCategory.findById(req.params.id);
       if (!subcategory) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Subcategory not found.'
         });
       }
@@ -126,7 +117,6 @@ class SubCategoryController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -135,14 +125,12 @@ class SubCategoryController {
       const updated = await SubCategory.update(req.params.id, { name, category_id, status });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Subcategory updated successfully.',
         data: updated
       });
     } catch (error) {
       console.error('Error updating subcategory:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to update subcategory.'
       });
     }
@@ -157,7 +145,6 @@ class SubCategoryController {
       const subcategory = await SubCategory.findById(req.params.id);
       if (!subcategory) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Subcategory not found.'
         });
       }
@@ -165,13 +152,11 @@ class SubCategoryController {
       await SubCategory.delete(req.params.id);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Subcategory deleted successfully.'
       });
     } catch (error) {
       console.error('Error deleting subcategory:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to delete subcategory.'
       });
     }

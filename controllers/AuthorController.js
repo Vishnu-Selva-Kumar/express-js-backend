@@ -10,14 +10,12 @@ class AuthorController {
     try {
       const authors = await Author.all(req.query);
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Authors retrieved successfully.',
         data: authors
       });
     } catch (error) {
       console.error('Error fetching authors:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve authors.'
       });
     }
@@ -38,7 +36,6 @@ class AuthorController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -47,14 +44,12 @@ class AuthorController {
       const author = await Author.create({ name, status });
 
       return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
         message: 'Author created successfully.',
         data: author
       });
     } catch (error) {
       console.error('Error creating author:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to create author.'
       });
     }
@@ -69,20 +64,17 @@ class AuthorController {
       const author = await Author.findById(req.params.id);
       if (!author) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Author not found.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Author retrieved successfully.',
         data: author
       });
     } catch (error) {
       console.error('Error fetching author:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve author.'
       });
     }
@@ -97,7 +89,6 @@ class AuthorController {
       const author = await Author.findById(req.params.id);
       if (!author) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Author not found.'
         });
       }
@@ -111,7 +102,6 @@ class AuthorController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -120,14 +110,12 @@ class AuthorController {
       const updated = await Author.update(req.params.id, { name, status });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Author updated successfully.',
         data: updated
       });
     } catch (error) {
       console.error('Error updating author:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to update author.'
       });
     }
@@ -142,7 +130,6 @@ class AuthorController {
       const author = await Author.findById(req.params.id);
       if (!author) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Author not found.'
         });
       }
@@ -150,13 +137,11 @@ class AuthorController {
       await Author.delete(req.params.id);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Author deleted successfully.'
       });
     } catch (error) {
       console.error('Error deleting author:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to delete author.'
       });
     }

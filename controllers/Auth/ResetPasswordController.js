@@ -20,7 +20,6 @@ class ResetPasswordController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -29,13 +28,11 @@ class ResetPasswordController {
       const resetRecord = await PasswordReset.findByTokenAndEmail(token, email);
       if (!resetRecord) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
-          success: false,
           message: 'Invalid or expired password reset token.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Password reset token is valid.',
         email,
         token
@@ -43,7 +40,6 @@ class ResetPasswordController {
     } catch (error) {
       console.error('VerifyResetToken error:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Internal server error.'
       });
     }
@@ -75,7 +71,6 @@ class ResetPasswordController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -85,7 +80,6 @@ class ResetPasswordController {
       const resetRecord = await PasswordReset.findByTokenAndEmail(token, email);
       if (!resetRecord) {
         return res.status(HTTP_STATUS.BAD_REQUEST).json({
-          success: false,
           message: 'Invalid or expired password reset token.'
         });
       }
@@ -94,7 +88,6 @@ class ResetPasswordController {
       const user = await User.findByEmail(email);
       if (!user) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'We could not find a user with that email address.'
         });
       }
@@ -112,13 +105,11 @@ class ResetPasswordController {
       await Token.revokeAllForUser(user.id).catch(() => {});
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Password has been successfully reset.'
       });
     } catch (error) {
       console.error('ResetPassword error:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Internal server error.'
       });
     }

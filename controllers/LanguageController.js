@@ -10,14 +10,12 @@ class LanguageController {
     try {
       const languages = await Language.all(req.query);
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Languages retrieved successfully.',
         data: languages
       });
     } catch (error) {
       console.error('Error fetching languages:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve languages.'
       });
     }
@@ -38,7 +36,6 @@ class LanguageController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -47,14 +44,12 @@ class LanguageController {
       const language = await Language.create({ name, status });
 
       return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
         message: 'Language created successfully.',
         data: language
       });
     } catch (error) {
       console.error('Error creating language:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to create language.'
       });
     }
@@ -69,20 +64,17 @@ class LanguageController {
       const language = await Language.findById(req.params.id);
       if (!language) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Language not found.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Language retrieved successfully.',
         data: language
       });
     } catch (error) {
       console.error('Error fetching language:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve language.'
       });
     }
@@ -97,7 +89,6 @@ class LanguageController {
       const language = await Language.findById(req.params.id);
       if (!language) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Language not found.'
         });
       }
@@ -111,7 +102,6 @@ class LanguageController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -120,14 +110,12 @@ class LanguageController {
       const updated = await Language.update(req.params.id, { name, status });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Language updated successfully.',
         data: updated
       });
     } catch (error) {
       console.error('Error updating language:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to update language.'
       });
     }
@@ -142,7 +130,6 @@ class LanguageController {
       const language = await Language.findById(req.params.id);
       if (!language) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Language not found.'
         });
       }
@@ -150,13 +137,11 @@ class LanguageController {
       await Language.delete(req.params.id);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Language deleted successfully.'
       });
     } catch (error) {
       console.error('Error deleting language:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to delete language.'
       });
     }

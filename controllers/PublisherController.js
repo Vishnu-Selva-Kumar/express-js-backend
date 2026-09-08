@@ -10,14 +10,12 @@ class PublisherController {
     try {
       const publishers = await Publisher.all(req.query);
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Publishers retrieved successfully.',
         data: publishers
       });
     } catch (error) {
       console.error('Error fetching publishers:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve publishers.'
       });
     }
@@ -38,7 +36,6 @@ class PublisherController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -47,14 +44,12 @@ class PublisherController {
       const publisher = await Publisher.create({ name, status });
 
       return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
         message: 'Publisher created successfully.',
         data: publisher
       });
     } catch (error) {
       console.error('Error creating publisher:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to create publisher.'
       });
     }
@@ -69,20 +64,17 @@ class PublisherController {
       const publisher = await Publisher.findById(req.params.id);
       if (!publisher) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Publisher not found.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Publisher retrieved successfully.',
         data: publisher
       });
     } catch (error) {
       console.error('Error fetching publisher:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve publisher.'
       });
     }
@@ -97,7 +89,6 @@ class PublisherController {
       const publisher = await Publisher.findById(req.params.id);
       if (!publisher) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Publisher not found.'
         });
       }
@@ -111,7 +102,6 @@ class PublisherController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -120,14 +110,12 @@ class PublisherController {
       const updated = await Publisher.update(req.params.id, { name, status });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Publisher updated successfully.',
         data: updated
       });
     } catch (error) {
       console.error('Error updating publisher:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to update publisher.'
       });
     }
@@ -142,7 +130,6 @@ class PublisherController {
       const publisher = await Publisher.findById(req.params.id);
       if (!publisher) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Publisher not found.'
         });
       }
@@ -150,13 +137,11 @@ class PublisherController {
       await Publisher.delete(req.params.id);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Publisher deleted successfully.'
       });
     } catch (error) {
       console.error('Error deleting publisher:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to delete publisher.'
       });
     }

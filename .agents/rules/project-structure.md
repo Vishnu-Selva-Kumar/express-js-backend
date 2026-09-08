@@ -50,7 +50,7 @@ express-app/
 ### 1. `constants/`
 - **`constants/httpStatus.js`**: Frozen HTTP status code constants (`HTTP_STATUS.OK`, `HTTP_STATUS.UNAUTHORIZED`, `HTTP_STATUS.UNPROCESSABLE_ENTITY`, etc.).
 - **Rule:** **Never use hardcoded magic numbers (e.g., `200`, `401`, `422`, `500`)** in controllers, middleware, or test assertions. Always import and use `HTTP_STATUS`.
-- **Response Format:** Standardize API responses with `{ success: boolean, message: string, ... }`.
+- **Response Format:** Standardize API responses per `.agents/rules/response-format.md`. Never include `success: false` parameter in error responses; frontend handles status based on HTTP status codes.
 
 ### 2. `database/`
 - **`database/db.js`**: Central Knex instance configured with environment settings.

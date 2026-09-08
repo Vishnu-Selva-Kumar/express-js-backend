@@ -19,7 +19,6 @@ class AttachmentController {
 
       if (!attachment) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Attachment not found.'
         });
       }
@@ -39,7 +38,6 @@ class AttachmentController {
       const normalize = (p) => decodeURIComponent(p || '').replace(/^\/+|\/+$/g, '');
       if (normalize(attachment.file_path) !== normalize(requestedPath)) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Attachment not found.'
         });
       }
@@ -56,7 +54,6 @@ class AttachmentController {
           filePath = altPathStorage;
         } else {
           return res.status(HTTP_STATUS.NOT_FOUND).json({
-            success: false,
             message: 'File not found on disk.'
           });
         }
@@ -85,7 +82,6 @@ class AttachmentController {
 
       if (!user) {
         return res.status(HTTP_STATUS.FORBIDDEN).json({
-          success: false,
           message: 'Unauthorized access.'
         });
       }
@@ -99,12 +95,10 @@ class AttachmentController {
       }
 
       return res.status(HTTP_STATUS.FORBIDDEN).json({
-        success: false,
         message: 'Unauthorized access.'
       });
     } catch (error) {
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: error.message || 'Internal server error'
       });
     }

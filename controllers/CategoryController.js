@@ -10,14 +10,12 @@ class CategoryController {
     try {
       const categories = await Category.all(req.query);
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Categories retrieved successfully.',
         data: categories
       });
     } catch (error) {
       console.error('Error fetching categories:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve categories.'
       });
     }
@@ -43,7 +41,6 @@ class CategoryController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -52,14 +49,12 @@ class CategoryController {
       const category = await Category.create({ name, status });
 
       return res.status(HTTP_STATUS.CREATED).json({
-        success: true,
         message: 'Category created successfully.',
         data: category
       });
     } catch (error) {
       console.error('Error creating category:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to create category.'
       });
     }
@@ -74,20 +69,17 @@ class CategoryController {
       const category = await Category.findById(req.params.id);
       if (!category) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Category not found.'
         });
       }
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Category retrieved successfully.',
         data: category
       });
     } catch (error) {
       console.error('Error fetching category:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to retrieve category.'
       });
     }
@@ -102,7 +94,6 @@ class CategoryController {
       const category = await Category.findById(req.params.id);
       if (!category) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Category not found.'
         });
       }
@@ -123,7 +114,6 @@ class CategoryController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -132,14 +122,12 @@ class CategoryController {
       const updated = await Category.update(req.params.id, { name, status });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Category updated successfully.',
         data: updated
       });
     } catch (error) {
       console.error('Error updating category:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to update category.'
       });
     }
@@ -154,7 +142,6 @@ class CategoryController {
       const category = await Category.findById(req.params.id);
       if (!category) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'Category not found.'
         });
       }
@@ -162,13 +149,11 @@ class CategoryController {
       await Category.delete(req.params.id);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Category deleted successfully.'
       });
     } catch (error) {
       console.error('Error deleting category:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Failed to delete category.'
       });
     }

@@ -19,7 +19,6 @@ class ProfileController {
     const formattedAttachment = Attachment.formatWithUrl(attachment, req);
 
     return res.status(HTTP_STATUS.OK).json({
-      success: true,
       message: 'Profile details.',
       user: {
         ...req.user,
@@ -78,7 +77,6 @@ class ProfileController {
       const formattedAttachment = Attachment.formatWithUrl(attachment, req);
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Profile updated successfully.',
         user: {
           ...updatedUser,
@@ -87,7 +85,6 @@ class ProfileController {
       });
     } catch (error) {
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: error.message || 'Failed to update profile.'
       });
     }

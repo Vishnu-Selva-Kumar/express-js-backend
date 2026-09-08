@@ -78,13 +78,11 @@ const createUploader = ({
           if (err instanceof multer.MulterError) {
             if (err.code === 'LIMIT_FILE_SIZE') {
               return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-                success: false,
                 message: `File too large. Maximum allowed size is ${maxFileSize / (1024 * 1024)}MB.`,
                 errors: { [fieldName]: 'File size limit exceeded.' }
               });
             }
             return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-              success: false,
               message: err.message,
               errors: { [fieldName]: err.message }
             });
@@ -92,14 +90,12 @@ const createUploader = ({
 
           if (err.code === 'INVALID_FILE_TYPE') {
             return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-              success: false,
               message: err.message,
               errors: { [fieldName]: err.message }
             });
           }
 
           return res.status(HTTP_STATUS.BAD_REQUEST).json({
-            success: false,
             message: err.message || 'File upload failed.'
           });
         }
