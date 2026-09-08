@@ -71,7 +71,15 @@ scope_rules:
     - docker
 
 workflow:
+  user_confirmation:
+    mandatory: true
+    rule: "Do not commit or push any changes without explicit user confirmation."
+    instructions:
+      - "Always ask and obtain explicit confirmation from the user before executing git commit."
+      - "Never execute git push to any remote repository without explicit user confirmation."
+
   before_commit:
+    - "Obtain explicit confirmation from the user before creating any commit."
     - "Run git status."
     - "Identify files related to the current change."
     - "Run git diff."
@@ -90,8 +98,12 @@ workflow:
     - "Review git diff --cached before committing."
 
   commit:
+    - "Obtain explicit user confirmation before running git commit."
     - "Use the generated Conventional Commit message."
     - "Create the commit only after staged changes have been verified."
+
+  push:
+    - "Never run git push without explicit user confirmation."
 
   after_commit:
     - "Run git log -1 --oneline."
@@ -138,6 +150,7 @@ examples:
 
 validation:
   before_commit:
+    - "Explicit user confirmation must be obtained before committing or pushing changes."
     - "Commit type must be one of the allowed types."
     - "Commit message must follow Conventional Commits."
     - "Description must be lowercase."
