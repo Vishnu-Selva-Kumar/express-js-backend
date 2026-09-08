@@ -21,7 +21,7 @@ describe('Authentication API Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body).toHaveProperty('token');
       expect(res.body).toHaveProperty('user');
       expect(res.body.user.email).toBe('admin@example.com');
@@ -39,7 +39,7 @@ describe('Authentication API Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Invalid email or password.');
     });
 
@@ -49,7 +49,7 @@ describe('Authentication API Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('email');
       expect(res.body.errors).toHaveProperty('password');
     });
@@ -62,7 +62,7 @@ describe('Authentication API Feature Tests', () => {
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body).toHaveProperty('user');
       expect(res.body.user.email).toBe('admin@example.com');
       expect(res.body.user.password).toBeUndefined();
@@ -72,7 +72,7 @@ describe('Authentication API Feature Tests', () => {
       const res = await request(app).get(routes.api.profile);
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Unauthorized');
     });
 
@@ -82,7 +82,7 @@ describe('Authentication API Feature Tests', () => {
         .set('Authorization', 'Bearer invalid.token.here');
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Unauthorized');
     });
   });
@@ -98,7 +98,7 @@ describe('Authentication API Feature Tests', () => {
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Successfully logged out.');
 
       // Verify token is removed from database
@@ -112,7 +112,7 @@ describe('Authentication API Feature Tests', () => {
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Unauthorized: Invalid or revoked token');
     });
   });

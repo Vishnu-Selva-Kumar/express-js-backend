@@ -53,7 +53,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
         .attach('attachment', pngBuffer, 'avatar.png');
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.user.name).toBe('Admin Updated');
       expect(res.body.user.attachment).toBeDefined();
       expect(res.body.user.attachment.file_name).toBe('avatar.png');
@@ -80,7 +80,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
         .set('Authorization', `Bearer ${authToken}`);
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.user.attachment).toBeDefined();
       expect(res.body.user.attachment.url).toContain(
         routes.mediaUrl(uploadedAttachmentId, uploadedFilePath)
@@ -123,7 +123,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
         .attach('attachment', textBuffer, 'malicious.txt');
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('attachment');
     });
 
@@ -133,7 +133,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
         .send({ name: 'Hacker' });
 
       expect(res.status).toBe(HTTP_STATUS.UNAUTHORIZED);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
     });
   });
 
@@ -153,7 +153,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
       const res = await request(app).get(mismatchUrl);
 
       expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Attachment not found.');
     });
 
@@ -163,7 +163,7 @@ describe('Profile Attachment & Media Feature Tests', () => {
       const res = await request(app).get(notFoundUrl);
 
       expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Attachment not found.');
     });
   });

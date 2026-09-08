@@ -24,7 +24,6 @@ class ForgotPasswordController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -34,7 +33,6 @@ class ForgotPasswordController {
       const user = await User.findByEmail(email);
       if (!user) {
         return res.status(HTTP_STATUS.NOT_FOUND).json({
-          success: false,
           message: 'We could not find a user with that email address.'
         });
       }
@@ -69,13 +67,11 @@ class ForgotPasswordController {
       );
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Password reset link sent to your email.'
       });
     } catch (error) {
       console.error('ForgotPassword error:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Internal server error.'
       });
     }

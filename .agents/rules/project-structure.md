@@ -13,7 +13,7 @@ express-app/
 ├── database/
 │   ├── db.js                  # Knex connection pool instance
 │   ├── migrations/            # Database migration files (Knex)
-│   └── seeds/                 # Database seeders (Knex)
+│   └── seeders/               # Database seeders (Knex)
 │
 ├── controllers/               # Request handling & response logic (Resource style)
 │   ├── Auth/
@@ -22,6 +22,9 @@ express-app/
 │
 ├── middleware/                # Express request interceptors & guards
 │   └── auth.js                # JWT & database-backed token authentication guard
+│
+├── helpers/                   # Centralized pure helper functions
+│   └── dateHelper.js          # UTC conversions & localized app formatting
 │
 ├── routes/                    # API route declarations
 │   └── api.js                 # Central API route definitions
@@ -50,12 +53,12 @@ express-app/
 ### 1. `constants/`
 - **`constants/httpStatus.js`**: Frozen HTTP status code constants (`HTTP_STATUS.OK`, `HTTP_STATUS.UNAUTHORIZED`, `HTTP_STATUS.UNPROCESSABLE_ENTITY`, etc.).
 - **Rule:** **Never use hardcoded magic numbers (e.g., `200`, `401`, `422`, `500`)** in controllers, middleware, or test assertions. Always import and use `HTTP_STATUS`.
-- **Response Format:** Standardize API responses with `{ success: boolean, message: string, ... }`.
+- **Response Format:** Standardize API responses per `.agents/rules/response-format.md`. Never include `success: false` parameter in error responses; frontend handles status based on HTTP status codes.
 
 ### 2. `database/`
 - **`database/db.js`**: Central Knex instance configured with environment settings.
 - **`database/migrations/`**: Contains Knex migration files. Must follow timestamp prefixes (`YYYYMMDDHHMMSS_create_tablename_table.js`).
-- **`database/seeds/`**: Contains database seeders. Must follow deterministic numeric prefixes (e.g., `01_roles_seeder.js`, `02_users_seeder.js`) and use upsert (`onConflict().merge()`) where applicable.
+- **`database/seeders/`**: Contains database seeders. Must follow deterministic numeric prefixes (e.g., `01_roles_seeder.js`, `02_users_seeder.js`) and use upsert (`onConflict().merge()`) where applicable.
 
 ### 3. `controllers/`
 - **Naming:** PascalCase with `Controller` suffix (e.g., `LoginController.js`, `ProfileController.js`).
@@ -85,6 +88,11 @@ express-app/
 - **`tests/Unit/`**: Tests focusing on individual models, functions, and isolated business logic.
 - **`tests/Feature/`**: End-to-end integration tests using `supertest` verifying full HTTP request-response lifecycles, status codes, and database state.
 
+### 8. `helpers/`
+- **Naming:** camelCase with `Helper` suffix (e.g., `dateHelper.js`).
+- **Responsibility:** Reusable pure helper functions (date/time manipulation, formatting) with zero heavy third-party bloat.
+- **Rule:** Standardize date handling per `.agents/rules/date-and-time.md`. Always import using `#helpers/*` alias.
+
 ---
 
 ## Agent Execution Guidelines
@@ -98,4 +106,4 @@ express-app/
    - Add corresponding test cases in `tests/Feature/` and `tests/Unit/`.
 2. **Never use magic numbers:** Always use `HTTP_STATUS.<CODE>` from `constants/httpStatus.js`.
 3. **Never create ad-hoc root directories:** Do not create top-level folders outside this specified structure.
-4. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeds`.
+4. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeders`.

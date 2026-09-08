@@ -11,7 +11,8 @@
     "#constants/*": "./constants/*.js",
     "#routes/*": "./routes/*.js",
     "#config/*": "./config/*.js",
-    "#database/*": "./database/*.js"
+    "#database/*": "./database/*.js",
+    "#helpers/*": "./helpers/*.js"
   },
   "scripts": {
     "start": "node index.js",

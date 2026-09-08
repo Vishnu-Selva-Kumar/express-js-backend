@@ -13,12 +13,35 @@ const routes = Object.freeze({
     resetPassword: '/api/reset-password',
     profile: '/api/profile',
     logout: '/api/logout',
+
+    // Admin Catalog endpoints
+    admin: Object.freeze({
+      categories: '/api/admin/categories',
+      category: '/api/admin/categories/:id',
+      subCategories: '/api/admin/subcategories',
+      subCategory: '/api/admin/subcategories/:id',
+      authors: '/api/admin/authors',
+      author: '/api/admin/authors/:id',
+      publishers: '/api/admin/publishers',
+      publisher: '/api/admin/publishers/:id',
+      languages: '/api/admin/languages',
+      language: '/api/admin/languages/:id',
+    }),
   }),
 
   web: Object.freeze({
     home: '/',
     media: '/media/:id/{*path}',
   }),
+
+  /**
+   * Helper functions for dynamic/parameterized Admin Catalog URLs
+   */
+  adminCategoryUrl: (id) => `/api/admin/categories/${id}`,
+  adminSubCategoryUrl: (id) => `/api/admin/subcategories/${id}`,
+  adminAuthorUrl: (id) => `/api/admin/authors/${id}`,
+  adminPublisherUrl: (id) => `/api/admin/publishers/${id}`,
+  adminLanguageUrl: (id) => `/api/admin/languages/${id}`,
 
   /**
    * Generate media stream URL

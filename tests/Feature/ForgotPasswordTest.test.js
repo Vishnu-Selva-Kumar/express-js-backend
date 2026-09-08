@@ -24,7 +24,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('email');
     });
 
@@ -34,7 +34,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .send({ email: 'not-an-email' });
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('email');
     });
 
@@ -44,7 +44,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .send({ email: 'nonexistent_user_999@example.com' });
 
       expect(res.status).toBe(HTTP_STATUS.NOT_FOUND);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('could not find a user');
     });
 
@@ -54,7 +54,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .send({ email: testEmail });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Password reset link');
 
       // Verify token record in database
@@ -75,7 +75,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .query({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('token');
       expect(res.body.errors).toHaveProperty('email');
     });
@@ -89,7 +89,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Invalid or expired');
     });
 
@@ -102,7 +102,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Password reset token is valid.');
       expect(res.body.token).toBe(generatedToken);
       expect(res.body.email).toBe(testEmail);
@@ -116,7 +116,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         .send({});
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('email');
       expect(res.body.errors).toHaveProperty('token');
       expect(res.body.errors).toHaveProperty('password');
@@ -134,7 +134,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.UNPROCESSABLE_ENTITY);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.errors).toHaveProperty('password_confirmation');
     });
 
@@ -149,7 +149,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.BAD_REQUEST);
-      expect(res.body.success).toBe(false);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toContain('Invalid or expired');
     });
 
@@ -166,7 +166,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(res.status).toBe(HTTP_STATUS.OK);
-      expect(res.body.success).toBe(true);
+      expect(res.body).not.toHaveProperty('success');
       expect(res.body.message).toBe('Password has been successfully reset.');
 
       // Verify token was deleted from password_resets
@@ -182,7 +182,7 @@ describe('Forgot & Reset Password Feature Tests', () => {
         });
 
       expect(loginRes.status).toBe(HTTP_STATUS.OK);
-      expect(loginRes.body.success).toBe(true);
+      expect(loginRes.body).not.toHaveProperty('success');
       expect(loginRes.body).toHaveProperty('token');
     });
   });

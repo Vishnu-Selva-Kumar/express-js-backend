@@ -20,7 +20,6 @@ class LoginController {
 
       if (Object.keys(errors).length > 0) {
         return res.status(HTTP_STATUS.UNPROCESSABLE_ENTITY).json({
-          success: false,
           message: 'Validation failed.',
           errors
         });
@@ -30,7 +29,6 @@ class LoginController {
       const user = await User.findByEmail(email);
       if (!user) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-          success: false,
           message: 'Invalid email or password.'
         });
       }
@@ -39,7 +37,6 @@ class LoginController {
       const isMatch = await bcrypt.compare(password, user.password);
       if (!isMatch) {
         return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-          success: false,
           message: 'Invalid email or password.'
         });
       }
@@ -59,7 +56,6 @@ class LoginController {
       });
 
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Login successful.',
         token,
         user: {
@@ -73,7 +69,6 @@ class LoginController {
     } catch (error) {
       console.error('Login error:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Internal server error.'
       });
     }
@@ -89,13 +84,11 @@ class LoginController {
         await Token.revoke(req.token);
       }
       return res.status(HTTP_STATUS.OK).json({
-        success: true,
         message: 'Successfully logged out.'
       });
     } catch (error) {
       console.error('Logout error:', error);
       return res.status(HTTP_STATUS.INTERNAL_SERVER_ERROR).json({
-        success: false,
         message: 'Internal server error.'
       });
     }

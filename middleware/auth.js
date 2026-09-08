@@ -12,7 +12,6 @@ const auth = async (req, res, next) => {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        success: false,
         message: 'Unauthorized: No token provided'
       });
     }
@@ -23,7 +22,6 @@ const auth = async (req, res, next) => {
     const tokenRecord = await Token.findValidToken(token);
     if (!tokenRecord) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        success: false,
         message: 'Unauthorized: Invalid or revoked token.'
       });
     }
@@ -35,7 +33,6 @@ const auth = async (req, res, next) => {
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        success: false,
         message: 'Unauthorized: User not found or inactive'
       });
     }
@@ -47,12 +44,10 @@ const auth = async (req, res, next) => {
   } catch (error) {
     if (error.name === 'TokenExpiredError') {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-        success: false,
         message: 'Unauthorized: Token expired'
       });
     }
     return res.status(HTTP_STATUS.UNAUTHORIZED).json({
-      success: false,
       message: 'Unauthorized: Invalid token'
     });
   }
