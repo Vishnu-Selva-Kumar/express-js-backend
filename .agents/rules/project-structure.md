@@ -13,7 +13,7 @@ express-app/
 ├── database/
 │   ├── db.js                  # Knex connection pool instance
 │   ├── migrations/            # Database migration files (Knex)
-│   └── seeds/                 # Database seeders (Knex)
+│   └── seeders/               # Database seeders (Knex)
 │
 ├── controllers/               # Request handling & response logic (Resource style)
 │   ├── Auth/
@@ -55,7 +55,7 @@ express-app/
 ### 2. `database/`
 - **`database/db.js`**: Central Knex instance configured with environment settings.
 - **`database/migrations/`**: Contains Knex migration files. Must follow timestamp prefixes (`YYYYMMDDHHMMSS_create_tablename_table.js`).
-- **`database/seeds/`**: Contains database seeders. Must follow deterministic numeric prefixes (e.g., `01_roles_seeder.js`, `02_users_seeder.js`) and use upsert (`onConflict().merge()`) where applicable.
+- **`database/seeders/`**: Contains database seeders. Must follow deterministic numeric prefixes (e.g., `01_roles_seeder.js`, `02_users_seeder.js`) and use upsert (`onConflict().merge()`) where applicable.
 
 ### 3. `controllers/`
 - **Naming:** PascalCase with `Controller` suffix (e.g., `LoginController.js`, `ProfileController.js`).
@@ -98,4 +98,4 @@ express-app/
    - Add corresponding test cases in `tests/Feature/` and `tests/Unit/`.
 2. **Never use magic numbers:** Always use `HTTP_STATUS.<CODE>` from `constants/httpStatus.js`.
 3. **Never create ad-hoc root directories:** Do not create top-level folders outside this specified structure.
-4. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeds`.
+4. **Database Paths:** Knex configurations in `knexfile.js` must target `database/migrations` and `database/seeders`.

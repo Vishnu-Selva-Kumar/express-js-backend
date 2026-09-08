@@ -73,10 +73,15 @@ scope_rules:
 workflow:
   user_confirmation:
     mandatory: true
-    rule: "Do not commit or push any changes without explicit user confirmation."
+    rule: "Do not create a branch, commit, or push without explicit user confirmation."
     instructions:
+      - "Never create or checkout a new git branch (e.g., git checkout -b, git switch -c, git branch) without explicit user confirmation."
       - "Always ask and obtain explicit confirmation from the user before executing git commit."
       - "Never execute git push to any remote repository without explicit user confirmation."
+
+  branching:
+    - "Never create, checkout, or switch to a new branch without explicit user confirmation."
+    - "Always consult the user or confirm the desired branch before performing any branch creation."
 
   before_commit:
     - "Obtain explicit confirmation from the user before creating any commit."
@@ -149,8 +154,8 @@ examples:
     - "Fixed the issue."
 
 validation:
-  before_commit:
-    - "Explicit user confirmation must be obtained before committing or pushing changes."
+  before_action:
+    - "Explicit user confirmation must be obtained before creating branches, committing, or pushing changes."
     - "Commit type must be one of the allowed types."
     - "Commit message must follow Conventional Commits."
     - "Description must be lowercase."
